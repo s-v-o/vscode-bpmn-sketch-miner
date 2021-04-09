@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Fira Sans Bold'), url('../fonts/FiraSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Fira Sans'), url('../fonts/FiraSans-Light.ttf') format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: normal;
+  src: local('Fira Sans'), url('../fonts/FiraSans-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Fira Mono Bold'), url('../fonts/FiraMono-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Fira Mono'), url('../fonts/FiraMono-Regular.ttf') format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Fira Sans OT';
+  font-style: italic;
+  font-weight: normal;
+  src: local('Fira Sans OT'), url('../fonts/FiraSans-LightItalic.ttf') format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Fira Sans OT';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Fira Sans OT'), url('../fonts/FiraSans-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fira Sans OT';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Fira Sans OT'), url('../fonts/FiraSans-Light.ttf') format('truetype');
+}

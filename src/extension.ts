@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import LZString = require("lz-string");
+import * as path from "path";
 
 
 // this method is called when your extension is activated
@@ -10,7 +11,6 @@ export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
   let panel: vscode.WebviewPanel | undefined = undefined;
-  let _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 
   console.log(
     'Extension "bpmn-sketch-miner" is now active!'
@@ -27,12 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       let text = vscode.window.activeTextEditor.document.getText() + '\n';
       if (text) {
-        let encoded = LZString.compressToEncodedURIComponent('bpln:v1\n--\n' + text);
 
-
-        let uri = vscode.Uri.parse(
-          "https://www.bpmn-sketch-miner.ai/index.html#" + encoded
-        );
         if (!panel) {
           panel = vscode.window.createWebviewPanel(
             "showBPMNSketchMiner",
@@ -44,10 +39,9 @@ export function activate(context: vscode.ExtensionContext) {
           );
         }
 
-        let content = getContent(uri, text);
+        let content = getContent(context, text, panel);
         panel.webview.html = content;
 
-        _onDidChange.fire(uri);
       }
 
     }
@@ -56,7 +50,11 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
-function getContent(bpmnSketchMinerUrl: vscode.Uri, content: string) {
+function getContent(context: vscode.ExtensionContext, content: string, panel:vscode.WebviewPanel) {
+
+  let encoded = LZString.compressToEncodedURIComponent('bpln:v1\n--\n' + content);
+  let bpmnSketchMinerUrl = vscode.Uri.parse("https://www.bpmn-sketch-miner.ai/index.html#" + encoded);
+  let libUri = panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'lib/')));
 
   return `
 <!DOCTYPE html>
@@ -66,8 +64,9 @@ function getContent(bpmnSketchMinerUrl: vscode.Uri, content: string) {
 <meta name="description" content="Sketch process models with the BPMN Business Process Modeling Notation as you describe them in simple natural language">
 <meta name="version" content="1.17.3.3296">
 <meta name="author" content="Cesare Pautasso, Ana Ivanchikj, Ilija Gjorgjiev"> 
-<link rel="stylesheet" href="https://www.bpmn-sketch-miner.ai/style.css"> 
-<link id="favicon" rel="shortcut icon" href="https://www.bpmn-sketch-miner.ai/logo.png"></head>
+<link rel="stylesheet" href="${libUri}/style.css">
+<link id="favicon" rel="shortcut icon" href="${libUri}/logo.png">
+</head>
 <body data-src="" class="hideNodeFrequency render-done">
 <header><section>
 <h1>BPMN Sketch Miner</h1>
@@ -79,13 +78,10 @@ function getContent(bpmnSketchMinerUrl: vscode.Uri, content: string) {
 <a id="button-option-layout-zoom-fit" href="#" title="Fit" class="selected">Fit</a></span>
 <span id="button-share"><a id="button-share-url-ext" href="${bpmnSketchMinerUrl}" style="">Link</a></span>
 </span>
-</nav></section></header>
-<aside class="popup" style="display: none;"><section><p>Use this link to save, bookmark or share a copy of your editable BPMN sketch:</p>
-		<textarea readonly="" id="link" wrap="off" rows="1" style="height: 1em;">https://www.bpmn-sketch-miner.ai#</textarea></section>
-    <a class="close" href="#" style="outline-width: 0px !important; user-select: auto !important;">×</a>
-</aside><main>
+</nav></section>
+</header>
+<main>
 <textarea id="logtext" style="display:none;" oninput="live(this.value+'\\n',true);" placeholder="What&#39;s your process like today?">
-
     ${content}
 </textarea>
 <div><svg id="restalk" style="">
@@ -94,7 +90,7 @@ function getContent(bpmnSketchMinerUrl: vscode.Uri, content: string) {
 </main>
 <div style="display: none"><footer><progress id="progress" style="display: none;"></progress><p id="status" style="display: none;">exporting</p></footer>
 <textarea id="explog"></textarea></div>
-<script src="https://www.bpmn-sketch-miner.ai/scripts.js"></script> <script src="https://www.bpmn-sketch-miner.ai/socket.io/socket.io.js"></script>
+<script src="${libUri}/scripts.js"></script> <script src="${libUri}/socket.io/socket.io.js"></script>
 </body></html>
 `
 }
