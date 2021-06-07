@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
-import { WebView } from "./WebView"
+import { WebView } from "./WebView";
 
-export class RemoteWebView extends WebView{
-
-    public getContent(context: vscode.ExtensionContext, content: string, panel:vscode.WebviewPanel) {
-        let url = this.getBpmnSketchMinerUrl(this.encode(content))
-        return `
+export class RemoteWebView extends WebView {
+  public getContent(
+    context: vscode.ExtensionContext,
+    content: string,
+    panel: vscode.WebviewPanel
+  ) {
+    let url = this.getBpmnSketchMinerUrl(this.encode(content));
+    return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +16,6 @@ export class RemoteWebView extends WebView{
 <body onload="javascript:window.location = '${url}'">
 </body>
 </html>
-`
-    }
+`;
+  }
 }

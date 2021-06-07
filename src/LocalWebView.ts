@@ -1,20 +1,24 @@
 import * as path from "path";
 import * as vscode from "vscode";
-import { WebView } from "./WebView"
+import { WebView } from "./WebView";
 
-export class LocalWebView extends WebView{
+export class LocalWebView extends WebView {
+  public getContent(
+    context: vscode.ExtensionContext,
+    content: string,
+    panel: vscode.WebviewPanel
+  ) {
+    let encoded = this.encode(content);
+    let bpmnSketchMinerUrl = this.getBpmnSketchMinerUrl(encoded);
+    let libUri = panel.webview.asWebviewUri(
+      vscode.Uri.file(path.join(context.extensionPath, "lib/"))
+    );
 
-public getContent(context: vscode.ExtensionContext, content: string, panel:vscode.WebviewPanel) {
+    // let encoded = LZString.compressToEncodedURIComponent('bpln:v1\n--\n' + content);
+    // let bpmnSketchMinerUrl = vscode.Uri.parse("https://www.bpmn-sketch-miner.ai/index.html#" + encoded);
+    // let libUri = panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'lib/')));
 
-  let encoded = this.encode(content)
-  let bpmnSketchMinerUrl = this.getBpmnSketchMinerUrl(encoded)
-  let libUri = panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'lib/')));
-
-  // let encoded = LZString.compressToEncodedURIComponent('bpln:v1\n--\n' + content);
-  // let bpmnSketchMinerUrl = vscode.Uri.parse("https://www.bpmn-sketch-miner.ai/index.html#" + encoded);
-  // let libUri = panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'lib/')));
-
-  return `
+    return `
 <!DOCTYPE html>
 <!-- saved from url=https://www.bpmn-sketch-miner.ai -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -50,8 +54,6 @@ public getContent(context: vscode.ExtensionContext, content: string, panel:vscod
 <textarea id="explog"></textarea></div>
 <script src="${libUri}/scripts.js"></script> <script src="${libUri}/socket.io/socket.io.js"></script>
 </body></html>
-`
-}
-
-
+`;
+  }
 }

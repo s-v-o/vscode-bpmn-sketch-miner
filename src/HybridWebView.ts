@@ -1,13 +1,15 @@
 import * as vscode from "vscode";
-import { WebView } from "./WebView"
+import { WebView } from "./WebView";
 
-export class HybridWebView extends WebView{
+export class HybridWebView extends WebView {
+  public getContent(
+    context: vscode.ExtensionContext,
+    content: string,
+    panel: vscode.WebviewPanel
+  ) {
+    let bpmnSketchMinerUrl = this.getBpmnSketchMinerUrl(this.encode(content));
 
-    public getContent(context: vscode.ExtensionContext, content: string, panel:vscode.WebviewPanel) {
-
-        let bpmnSketchMinerUrl = this.getBpmnSketchMinerUrl(this.encode(content))
-
-        return `
+    return `
 <!DOCTYPE html>
 <!-- saved from url=https://www.bpmn-sketch-miner.ai -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -46,8 +48,6 @@ export class HybridWebView extends WebView{
 <div style="display: none"><footer><progress id="progress" style="display: none;"></progress><p id="status" style="display: none;">exporting</p></footer>
 <textarea id="explog"></textarea></div>
 <script src="https://www.bpmn-sketch-miner.ai/scripts.js"></script> <script src="https://www.bpmn-sketch-miner.ai/socket.io/socket.io.js"></script></body></html>
-`
-
-    }
-
+`;
+  }
 }
