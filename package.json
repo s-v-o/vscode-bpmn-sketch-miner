@@ -3,20 +3,20 @@
   "displayName": "BPMN Sketch Miner",
   "publisher": "s-v-o",
   "description": "Show Editor content in BPMN Sketch Miner",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.55.0"
   },
   "categories": [
-      "Programming Languages",
-      "Formatters",
-      "Visualization",
-      "Other"
+    "Programming Languages",
+    "Formatters",
+    "Visualization",
+    "Other"
   ],
   "repository": {
-		"type": "git",
-		"url": "https://github.com/s-v-o/bpmn-sketch-miner.git"
-	},
+    "type": "git",
+    "url": "https://github.com/s-v-o/bpmn-sketch-miner.git"
+  },
   "activationEvents": [
     "onCommand:bpmn-sketch-miner.show"
   ],
@@ -28,7 +28,11 @@
         "bpmn-sketch-miner.generatorSource": {
           "type": "string",
           "default": "local",
-          "enum": ["local", "hybrid", "web"],
+          "enum": [
+            "local",
+            "hybrid",
+            "web"
+          ],
           "description": "Source of the used generator."
         }
       }
