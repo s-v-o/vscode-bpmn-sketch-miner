@@ -18,10 +18,17 @@ export class LocalWebView extends WebView {
     // let bpmnSketchMinerUrl = vscode.Uri.parse("https://www.bpmn-sketch-miner.ai/index.html#" + encoded);
     // let libUri = panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'lib/')));
 
+    // https://file+.vscode-resource.vscode-cdn.net/home/stefan/Entwicklung/vscode/bpmn-sketch-miner/lib//style.css
+
     return `
 <!DOCTYPE html>
 <!-- saved from url=https://www.bpmn-sketch-miner.ai -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src ${panel.webview.cspSource} https:; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';"
+/>
 <title>BPMN Sketch Miner</title>
 <meta name="description" content="Sketch process models with the BPMN Business Process Modeling Notation as you describe them in simple natural language">
 <meta name="version" content="1.17.3.3296">
