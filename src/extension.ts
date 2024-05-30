@@ -34,6 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
           panel = WebView.createWebPanel();
           currentSource = source;
         }
+        panel.onDidDispose(() => (panel = undefined));
         let webView: WebView;
 
         switch (source) {
