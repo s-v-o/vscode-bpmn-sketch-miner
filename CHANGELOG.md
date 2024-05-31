@@ -2,6 +2,10 @@
 
 All notable changes to the "bpmn-sketch-miner" extension will be documented in this file.
 
+## [1.0.5]
+
+- Fix #3: "Command not found"
+
 ## [1.0.4]
 
 - Fix #1: "webview is disposed"
