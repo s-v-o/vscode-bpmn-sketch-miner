@@ -4,7 +4,7 @@
   "publisher": "s-v-o",
   "description": "Show Editor content in BPMN Sketch Miner",
   "icon": "images/vscode-bpmn-sketch-miner.png",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "engines": {
     "vscode": "^1.55.0"
   },
@@ -48,8 +48,8 @@
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
-    "package": "pnpm vsce package --no-dependencies",
-    "publish": "pnpm vsce publish --no-dependencies",
+    "package": "pnpm vsce package",
+    "publish": "pnpm vsce publish",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
