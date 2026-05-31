@@ -6,60 +6,68 @@ import { HybridWebView } from "./HybridWebView";
 import { RemoteWebView } from "./RemoteWebView";
 import { WebView } from "./WebView";
 
+let currentSource: string = "";
+let panel: vscode.WebviewPanel | undefined = undefined;
+
 export function activate(context: vscode.ExtensionContext) {
-  let panel: vscode.WebviewPanel | undefined = undefined;
-  let currentSource: string = "";
 
   console.log('Extension "bpmn-sketch-miner" is now active!');
 
   let disposable = vscode.commands.registerCommand(
     "bpmn-sketch-miner.show",
     () => {
-      if (!vscode.window.activeTextEditor) {
-        return;
-      }
-      let text = vscode.window.activeTextEditor.document.getText() + "\n";
-      if (text) {
-        let source = vscode.workspace
-          .getConfiguration("bpmn-sketch-miner")
-          .get("generatorSource") as string;
-
-        if (panel) {
-          if (source !== currentSource) {
-            panel.dispose();
-            panel = WebView.createWebPanel();
-            currentSource = source;
-          }
-        } else {
-          panel = WebView.createWebPanel();
-          currentSource = source;
-        }
-        panel.onDidDispose(() => (panel = undefined));
-        let webView: WebView;
-
-        switch (source) {
-          case "local":
-            webView = new LocalWebView();
-            break;
-          case "hybrid":
-            webView = new HybridWebView();
-            break;
-          case "web":
-            webView = new RemoteWebView();
-            break;
-          default:
-            webView = new LocalWebView();
-            break;
-        }
-
-        let content = webView.getContent(context, text, panel);
-        panel.webview.html = content;
-      }
+      renderBPMN(context, panel, currentSource);
     }
   );
 
   context.subscriptions.push(disposable);
+
+  //vscode.workspace.ondid
+}
+
+function renderBPMN(context: vscode.ExtensionContext, panel: vscode.WebviewPanel | undefined, currentSource: string) {
+  if (!vscode.window.activeTextEditor) {
+    return;
+  }
+  let text = vscode.window.activeTextEditor.document.getText() + "\n";
+  if (text) {
+    let source = vscode.workspace
+      .getConfiguration("bpmn-sketch-miner")
+      .get("generatorSource") as string;
+
+    if (panel) {
+      if (source !== currentSource) {
+        panel.dispose();
+        panel = WebView.createWebPanel();
+        currentSource = source;
+      }
+    } else {
+      panel = WebView.createWebPanel();
+      currentSource = source;
+    }
+    panel.onDidDispose(() => (panel = undefined));
+    let webView: WebView;
+
+    switch (source) {
+      case "local":
+        webView = new LocalWebView();
+        break;
+      case "hybrid":
+        webView = new HybridWebView();
+        break;
+      case "web":
+        webView = new RemoteWebView();
+        break;
+      default:
+        webView = new LocalWebView();
+        break;
+    }
+
+    let content = webView.getContent(context, text, panel);
+    panel.webview.html = content;
+  }
+
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
