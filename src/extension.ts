@@ -26,17 +26,21 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  vscode.workspace.onDidSaveTextDocument(async () => {
+    await renderBPMN(context, panel, currentSource)
+  })
+
   context.subscriptions.push(disposable);
   context.subscriptions.push(log);
 
-  //vscode.workspace.ondid
 }
 
-function renderBPMN(context: vscode.ExtensionContext, panel: vscode.WebviewPanel | undefined, currentSource: string) {
+async function renderBPMN(context: vscode.ExtensionContext, panel: vscode.WebviewPanel | undefined, currentSource: string) {
   if (!vscode.window.activeTextEditor) {
     return;
   }
-  let text = vscode.window.activeTextEditor.document.getText() + "\n";
+  const editor = vscode.window.activeTextEditor;
+  let text = editor.document.getText() + "\n";
   if (text) {
     let source = vscode.workspace
       .getConfiguration("bpmn-sketch-miner")
@@ -72,6 +76,9 @@ function renderBPMN(context: vscode.ExtensionContext, panel: vscode.WebviewPanel
 
     let content = webView.getContent(context, text, panel);
     panel.webview.html = content;
+    
+    await vscode.commands.executeCommand('workbench.action.focusFirstEditorGroup');
+
   }
 
 }
