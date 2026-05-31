@@ -9,9 +9,15 @@ import { WebView } from "./WebView";
 let currentSource: string = "";
 let panel: vscode.WebviewPanel | undefined = undefined;
 
+const log = vscode.window.createOutputChannel(
+  'vscode-bpmn-sketch-miner',
+  { log: true }
+);
+
 export function activate(context: vscode.ExtensionContext) {
 
-  console.log('Extension "bpmn-sketch-miner" is now active!');
+  log.info('Extension "bpmn-sketch-miner" is now active!!!');
+  log.info(`Version: ${context.extension.packageJSON.version}`)
 
   let disposable = vscode.commands.registerCommand(
     "bpmn-sketch-miner.show",
@@ -21,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+  context.subscriptions.push(log);
 
   //vscode.workspace.ondid
 }
