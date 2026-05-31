@@ -2,6 +2,10 @@
 
 All notable changes to the "bpmn-sketch-miner" extension will be documented in this file.
 
+## [1.1.1]
+
+- fix publish
+
 ## [1.1.0]
 
 - Refresh the web view on save
