@@ -6,8 +6,12 @@ import { HybridWebView } from "./HybridWebView";
 import { RemoteWebView } from "./RemoteWebView";
 import { WebView } from "./WebView";
 
+const BPMN_SKETCH_MINER_SECTION = "bpmn-sketch-miner"
+
 let currentSource: string = "";
 let panel: vscode.WebviewPanel | undefined = undefined;
+let timer: NodeJS.Timeout;
+let configuration: vscode.WorkspaceConfiguration;
 
 const log = vscode.window.createOutputChannel(
   'vscode-bpmn-sketch-miner',
@@ -19,6 +23,8 @@ export function activate(context: vscode.ExtensionContext) {
   log.info('Extension "bpmn-sketch-miner" is now active!!!');
   log.info(`Version: ${context.extension.packageJSON.version}`)
 
+  configuration = vscode.workspace.getConfiguration(BPMN_SKETCH_MINER_SECTION);
+
   let disposable = vscode.commands.registerCommand(
     "bpmn-sketch-miner.show",
     () => {
@@ -26,9 +32,32 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+
+  if (configuration.get("autoRefresh")) {
+    vscode.workspace.onDidChangeTextDocument(event => {
+      clearTimeout(timer);
+
+      if (!configuration.get("autoRefresh")){
+        return;
+      }
+
+      timer = setTimeout(async () => {
+        await renderBPMN(context, panel, currentSource)
+      }, configuration.get("autoRefreshTimeout"));
+    });
+  }
+
   vscode.workspace.onDidSaveTextDocument(async () => {
     await renderBPMN(context, panel, currentSource)
   })
+
+  vscode.workspace.onDidChangeConfiguration(event => {
+    log.debug("Configuration changed.")
+    if (event.affectsConfiguration(BPMN_SKETCH_MINER_SECTION)) {
+      log.debug("Extension configuration changed.")
+      configuration = vscode.workspace.getConfiguration(BPMN_SKETCH_MINER_SECTION);
+    }
+  });
 
   context.subscriptions.push(disposable);
   context.subscriptions.push(log);
@@ -42,9 +71,7 @@ async function renderBPMN(context: vscode.ExtensionContext, panel: vscode.Webvie
   const editor = vscode.window.activeTextEditor;
   let text = editor.document.getText() + "\n";
   if (text) {
-    let source = vscode.workspace
-      .getConfiguration("bpmn-sketch-miner")
-      .get("generatorSource") as string;
+    let source = configuration.get("generatorSource") as string;
 
     if (panel) {
       if (source !== currentSource) {
@@ -76,7 +103,7 @@ async function renderBPMN(context: vscode.ExtensionContext, panel: vscode.Webvie
 
     let content = webView.getContent(context, text, panel);
     panel.webview.html = content;
-    
+
     await vscode.commands.executeCommand('workbench.action.focusFirstEditorGroup');
 
   }

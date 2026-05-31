@@ -4,7 +4,7 @@
   "publisher": "s-v-o",
   "description": "Show Editor content in BPMN Sketch Miner",
   "icon": "images/vscode-bpmn-sketch-miner.png",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.55.0"
   },
@@ -26,6 +26,16 @@
     "configuration": {
       "title": "BPMN-Sketch-Miner",
       "properties": {
+        "bpmn-sketch-miner.autoRefresh": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Refresh the web view automatically after changes."
+        },
+        "bpmn-sketch-miner.autoRefreshTimeout": {
+          "type": "integer",
+          "default": 1000,
+          "description": "Time in ms before AutoRefresh is triggered (for debouncing)."
+        },
         "bpmn-sketch-miner.generatorSource": {
           "type": "string",
           "default": "local",
@@ -70,6 +80,6 @@
     "vscode-test": "^1.5.0"
   },
   "dependencies": {
-    "lz-string": "^1.4.4"
+    "lz-string": "^1.5.0"
   }
 }
