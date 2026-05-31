@@ -4,9 +4,9 @@
   "publisher": "s-v-o",
   "description": "Show Editor content in BPMN Sketch Miner",
   "icon": "images/vscode-bpmn-sketch-miner.png",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
-    "vscode": "^1.55.0"
+    "vscode": "^1.87.0"
   },
   "categories": [
     "Programming Languages",
@@ -58,8 +58,8 @@
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
-    "package": "pnpm vsce package",
-    "publish": "pnpm vsce publish",
+    "package": "npx vsce package",
+    "publish": "npx vsce publish",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
@@ -69,10 +69,10 @@
   "devDependencies": {
     "@types/lz-string": "^1.3.34",
     "@types/node": "^25.9.1",
-    "@types/vscode": "^1.120.0",
+    "@types/vscode": "^1.87.0",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
     "@typescript-eslint/parser": "^8.60.0",
-    "@vscode/vsce": "^2.26.1",
+    "@vscode/vsce": "^3.9.1",
     "esbuild": "^0.21.4",
     "eslint": "^10.4.1",
     "node": "^24.16.0",
