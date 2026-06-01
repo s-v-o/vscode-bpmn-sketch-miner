@@ -2,6 +2,12 @@
 
 All notable changes to the "bpmn-sketch-miner" extension will be documented in this file.
 
+## [1.2.0]
+
+- fix hybrid generator to show web site of bpmn-sketch-miner
+- fix web generator to show web site of bpmn-sketch-miner
+- add SVG download in local generator
+
 ## [1.1.1]
 
 - fix publish

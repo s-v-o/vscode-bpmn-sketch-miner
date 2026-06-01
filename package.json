@@ -4,7 +4,7 @@
   "publisher": "s-v-o",
   "description": "Show Editor content in BPMN Sketch Miner",
   "icon": "images/vscode-bpmn-sketch-miner.png",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.87.0"
   },
@@ -18,9 +18,6 @@
     "type": "git",
     "url": "https://github.com/s-v-o/vscode-bpmn-sketch-miner.git"
   },
-  "activationEvents": [
-    "onCommand:bpmn-sketch-miner.show"
-  ],
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
