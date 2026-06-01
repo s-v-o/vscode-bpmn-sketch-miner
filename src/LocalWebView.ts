@@ -14,11 +14,20 @@ export class LocalWebView extends WebView {
       vscode.Uri.file(path.join(context.extensionPath, "lib/"))
     );
 
-    // let encoded = LZString.compressToEncodedURIComponent('bpln:v1\n--\n' + content);
-    // let bpmnSketchMinerUrl = vscode.Uri.parse("https://www.bpmn-sketch-miner.ai/index.html#" + encoded);
-    // let libUri = panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'lib/')));
+    panel.webview.onDidReceiveMessage(async message => {
+      if (message?.command === 'download') {
+        const uri = await vscode.window.showSaveDialog({
+          defaultUri: vscode.Uri.file('bpmn.svg')
+        });
 
-    // https://file+.vscode-resource.vscode-cdn.net/home/stefan/Entwicklung/vscode/bpmn-sketch-miner/lib//style.css
+        if (uri) {
+          await vscode.workspace.fs.writeFile(
+            uri,
+            Buffer.from(message.payload, 'utf8')
+          );
+        }
+      }
+    });
 
     return `
 <!DOCTYPE html>
@@ -46,7 +55,21 @@ export class LocalWebView extends WebView {
 <span id="button-option-layout">Zoom: <a id="button-option-layout-zoom-none" href="#" title="1:1">1:1</a>
 <a id="button-option-layout-zoom-fit" href="#" title="Fit" class="selected">Fit</a></span>
 <span id="button-share"><a id="button-share-url-ext" href="${bpmnSketchMinerUrl}" style="">Link</a></span>
+<span id="button-export">
+  <a id="button-export-svg">SVG</a>
 </span>
+
+<script>
+
+  const api = acquireVsCodeApi();
+
+  document.getElementById("button-export-svg").addEventListener("click", ()=>{
+    const svg = export_svg(document.querySelector('svg'), 'test'); 
+    api.postMessage({command: 'download', payload: svg});
+  });
+
+</script>
+
 </nav></section>
 </header>
 <main>
@@ -59,7 +82,8 @@ export class LocalWebView extends WebView {
 </main>
 <div style="display: none"><footer><progress id="progress" style="display: none;"></progress><p id="status" style="display: none;">exporting</p></footer>
 <textarea id="explog"></textarea></div>
-<script src="${libUri}/scripts.js"></script> <script src="${libUri}/socket.io/socket.io.js"></script>
+<script src="${libUri}/scripts.js"></script> 
+<script src="${libUri}/socket.io/socket.io.js"></script>
 </body></html>
 `;
   }

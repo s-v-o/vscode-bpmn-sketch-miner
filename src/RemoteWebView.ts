@@ -12,8 +12,14 @@ export class RemoteWebView extends WebView {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://www.bpmn-sketch-miner.ai;">
+  <meta http-equiv="refresh" content="0;url=${url}">
 </head>
-<body onload="javascript:window.location = '${url}'">
+<body >
+<iframe
+    src="${url}"
+    style="width:100%;height:100vh;border:none;">
+</iframe>
 </body>
 </html>
 `;

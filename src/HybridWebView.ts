@@ -16,7 +16,7 @@ export class HybridWebView extends WebView {
 <title>BPMN Sketch Miner</title>
 <meta
   http-equiv="Content-Security-Policy"
-  content="default-src ${panel.webview.cspSource} https:; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';"
+  content="default-src ${panel.webview.cspSource} https:; script-src ${panel.webview.cspSource} https://www.bpmn-sketch-miner.ai 'unsafe-inline'; style-src ${panel.webview.cspSource} https://www.bpmn-sketch-miner.ai 'unsafe-inline';"
 />
 <meta name="description" content="Sketch process models with the BPMN Business Process Modeling Notation as you describe them in simple natural language">
 <meta name="version" content="1.17.3.3296">
