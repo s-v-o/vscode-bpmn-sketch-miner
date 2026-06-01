@@ -24,8 +24,6 @@ export abstract class WebView {
   }
 
   getBpmnSketchMinerUrl(encodedContent: String) {
-    return vscode.Uri.parse(
-      "https://www.bpmn-sketch-miner.ai/index.html#" + encodedContent
-    );
+    return `https://www.bpmn-sketch-miner.ai/#${encodedContent}`
   }
 }
